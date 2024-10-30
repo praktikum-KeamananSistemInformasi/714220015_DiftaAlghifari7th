@@ -64,6 +64,8 @@ body {
   object-fit: cover;
 }
 
+
+
 .content-container {
   background-color: hsla(0, 0%, 100%, 0.3);
   backdrop-filter: blur(30px);
