@@ -1,88 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kriptografi</title>
-    <link rel="stylesheet" href="./style.css" />
-    <link
-      rel="icon"
-      href="/assets/img/logodugeon_pink.png"
-      type="image/x-icon"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  </head>
-  <body>
-    <section class="container">
-      <div class="image-section">
-        <div class="image-wrapper">
-          <img src="/assets/img/mesh-gradient.png" alt="" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setor Tugas KEAMANAN INFORMASI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="title">
+        <p>Tugas Keamanan INFORMASI</p>
+    </div>
+    <div class="container">
+        <div class="btn">
+            <button><a href="./src/page/enkripsi/index.html">Tugas 1</a></button>
+            <button><a href="./src/page/S&D/index.html">Tugas 2</a></button>
         </div>
-
-        <div class="content-container">
-          <h1 class="section-heading">Mari Pahami Kriptografi!</h1>
-          <p class="section-paragraph">
-            Mari Mulai Memahami Kriptografi dengan Belajar Enkripsi dan Dekripsi
-          </p>
-          <p class="nuril" >TUGAS 2 KEAMANAN INFORMASI TEKAN &nbsp;<a href="./S&D/index.html" style="font-weight: bolder;">DISINI</a></p>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-wrapper">
-          <h2>Mulai Enkripsi Text Kamu</h2>
-
-          <textarea
-            id="plainText"
-            placeholder="Masukkan Teks Yang Ingin Kamu Enkripsi"
-          ></textarea>
-
-          <div class="input-container">
-            <div class="form-group">
-              <label for="algorithm"
-                >Pilih Algoritma Yang Ingin Digunakan</label
-              >
-              <select id="algorithm" onchange="updateAlgorithmInfo()">
-                <option value="">Select an algorithm</option>
-                <option value="RC4">RC4</option>
-                <option value="Rabbit">Rabbit</option>
-                <option value="TripleDES">TripleDES</option>
-                <option value="DES">DES</option>
-                <option value="AES">AES</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="Kunci">Masukkan Kunci</label>
-              <input type="text" id="Kunci" placeholder="Masukkan Kunci" />
-            </div>
-          </div>
-
-          <div class="tombol">
-            <button onclick="processText()">Mulai Kriptografi</button>
-          </div>
-
-          <h3>Teks Terkriptografi</h3>
-          <p id="encryptedText">Belum Ada Teks Yang Terkriptografi</p>
-
-          <h3>Teks Hash (Kunci)(SHA256):</h3>
-          <p id="hashedText">Belum Ada Teks Kunci</p>
-
-          <button class="tombol" onclick="decryptText()">
-            Kembalikan Lagi Ke Teks Asli
-          </button>
-
-          <h3>Kembalikan KE TEks Asli</h3>
-          <p id="decryptedText">Belum Ada Teks TErdeksripsi</p>
-
-          <h3>Notes:</h3>
-          <p id="notes">
-            Proses Enkripsi Selesai, Tapi Apa Kamu Paham? Pasti Tidak Paham,
-            Karena Itu Mari Kita Amati Proses Enkripsinya
-            <a href="Proses.html">Disini</a>
-          </p>
-        </div>
-      </div>
-    </section>
-    <script src="main.js"></script>
-  </body>
+    </div>
+    
+</body>
 </html>
