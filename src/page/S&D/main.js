@@ -2,22 +2,22 @@ const caseOptions = {
   Server: [
     { name: "Overload", threat: "Denial of Service" },
     { name: "Unauthorized Access", threat: "Spoofing" },
-    { name: "DDoS", threat: "Denial of Service'" },
+    { name: "DDoS", threat: "Denial of Service" },
   ],
   Database: [
     { name: "SQL Injection", threat: "Tampering" },
     { name: "Data Breach", threat: "Information Disclosure" },
-    { name: "Data Corruption", threat: "Tampering'" },
+    { name: "Data Corruption", threat: "Tampering" },
   ],
   "Data Pengguna": [
-    { name: "Phishing", threat: "Spoofing'" },
-    { name: "Identity Theft", threat: "Information Disclosure'" },
-    { name: "Data Leak", threat: "'Information Disclosure" },
+    { name: "Phishing", threat: "Spoofing" },
+    { name: "Identity Theft", threat: "Information Disclosure" },
+    { name: "Data Leak", threat: "Information Disclosure" },
   ],
   "API Eksternal": [
-    { name: "Man-in-the-Middle", threat: "'Tampering" },
-    { name: "API Abuse", threat: "'Denial of Service" },
-    { name: "Invalid Requests", threat: "Denial' of Service" },
+    { name: "Man-in-the-Middle", threat: "Tampering" },
+    { name: "API Abuse", threat: "Denial of Service" },
+    { name: "Invalid Requests", threat: "Denial of Service" },
   ],
 };
 
@@ -47,27 +47,29 @@ const descOptions = {
   "Invalid Requests":
     "Permintaan yang tidak valid atau salah format yang dikirimkan ke API, yang dapat mengakibatkan kesalahan dalam pemrosesan dan potensi eksploitasi.",
 };
+
 const mitigationOptions = {
   "Denial of Service": "Terapkan pembatasan bandwidth.",
-  "Denial of Service'":
+  "Denial of Service":
     "Terapkan solusi mitigasi DDoS seperti pemantauan traffic dan filtering.",
   Spoofing: "Gunakan autentikasi dua faktor.",
   Tampering: "Gunakan parameterized queries dan ORM.",
   "Information Disclosure": "Enkripsi data sensitif.",
-  "Tampering'": "Implementasikan sistem backup dan restore.",
-  "Spoofing'": "Edukasi pengguna tentang tanda-tanda phishing.",
-  "Information Disclosure'": "Gunakan monitoring identitas dan layanan alert.",
-  "'Information Disclosure": "Terapkan kontrol akses ketat.",
-  "'Tampering": "Gunakan HTTPS untuk memastikan data dienkripsi.",
-  "'Denial of Service":
+  Tampering: "Implementasikan sistem backup dan restore.",
+  Spoofing: "Edukasi pengguna tentang tanda-tanda phishing.",
+  "Information Disclosure": "Gunakan monitoring identitas dan layanan alert.",
+  "Information Disclosure": "Terapkan kontrol akses ketat.",
+  Tampering: "Gunakan HTTPS untuk memastikan data dienkripsi.",
+  "Denial of Service":
     "Batasi jumlah permintaan dan implementasikan throttling.",
-  "Denial' of service": "Validasi input di sisi server.",
-
-  // Tambahkan mitigasi lainnya sesuai ancaman
+  "Denial of Service": "Validasi input di sisi server.",
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Event listener untuk dropdown aset
+  // Load existing data from local storage
+  loadStoredData();
+
+  // Event listener for asset dropdown
   document.getElementById("asset").addEventListener("change", function () {
     const selectedAsset = this.value;
     const caseDropdown = document.getElementById("case");
@@ -85,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Event listener untuk dropdown kasus
+  // Event listener for case dropdown
   document.getElementById("case").addEventListener("change", function () {
     const selectedCase = this.value;
     const selectedAsset = document.getElementById("asset").value;
@@ -96,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("threatDescription").textContent = selectedThreat;
   });
 
-  // Event listener untuk tombol Hitung
+  // Event listener for Calculate button
   document.getElementById("submitBtn").addEventListener("click", function () {
     const asset = document.getElementById("asset").value;
     const caseValue = document.getElementById("case").value;
@@ -106,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const affectedUsers = document.getElementById("affectedUsers").value;
     const discoverability = document.getElementById("discoverability").value;
 
-    // Cek apakah ada nilai yang kosong
+    // Check for empty values
     if (
       !asset ||
       !caseValue ||
@@ -120,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Cek nilai maksimal
+    // Check maximum values
     if (
       damage > 10 ||
       reproducibility > 10 ||
@@ -139,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
       parseInt(affectedUsers) +
       parseInt(discoverability);
 
-    // Tentukan tingkat risiko
+    // Determine risk level
     let riskLevel;
     if (totalScore <= 25) {
       riskLevel = "Rendah";
@@ -149,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
       riskLevel = "Tinggi";
     }
 
-    // Tambahkan entri ke tabel
+    // Add entry to the table
     const tableBody = document.getElementById("tableBody");
     const row = tableBody.insertRow();
     row.insertCell(0).textContent = new Date().toLocaleString();
@@ -158,32 +160,67 @@ document.addEventListener("DOMContentLoaded", () => {
     row.insertCell(3).textContent =
       document.getElementById("threatDescription").textContent;
     row.insertCell(4).textContent = totalScore;
-    row.insertCell(5).textContent = riskLevel; // Kolom baru untuk risiko
+    row.insertCell(5).textContent = riskLevel; // New column for risk
 
-    // Tambahkan mitigasi di kolom baru
+    // Add mitigation in new column
     const selectedName =
       document.getElementById("threatDescription").textContent;
     const mitigation =
       mitigationOptions[selectedName] || "Tidak ada mitigasi yang tersedia.";
-    row.insertCell(6).textContent = mitigation; // Kolom mitigasi
+    row.insertCell(6).textContent = mitigation; // Mitigation column
+
+    // Store the entry in local storage
+    storeDataInLocalStorage(asset, caseValue, selectedName, totalScore, riskLevel, mitigation);
   });
 
-  // Event listener untuk urutkan risiko naik
+  // Load existing data from local storage
+  function loadStoredData() {
+    const storedData = JSON.parse(localStorage.getItem("threatData")) || [];
+    const tableBody = document.getElementById("tableBody");
+    storedData.forEach(entry => {
+      const row = tableBody.insertRow();
+      row.insertCell(0).textContent = entry.date;
+      row.insertCell(1).textContent = entry.asset;
+      row.insertCell(2).textContent = entry.caseValue;
+      row.insertCell(3).textContent = entry.threatDescription;
+      row.insertCell(4).textContent = entry.totalScore;
+      row.insertCell(5).textContent = entry.riskLevel;
+      row.insertCell(6).textContent = entry.mitigation;
+    });
+  }
+
+  // Store data in local storage
+  function storeDataInLocalStorage(asset, caseValue, threatDescription, totalScore, riskLevel, mitigation) {
+    const storedData = JSON.parse(localStorage .getItem("threatData")) || [];
+    const newEntry = {
+      date: new Date().toLocaleString(),
+      asset,
+      caseValue,
+      threatDescription,
+      totalScore,
+      riskLevel,
+      mitigation,
+    };
+    storedData.push(newEntry);
+    localStorage.setItem("threatData", JSON.stringify(storedData));
+  }
+
+  // Event listener for sort ascending
   document
     .getElementById("sortUp")
     .addEventListener("click", () => sortTable(true));
 
-  // Event listener untuk urutkan risiko turun
+  // Event listener for sort descending
   document
     .getElementById("sortDown")
     .addEventListener("click", () => sortTable(false));
 
-  // Fungsi untuk mengurutkan tabel
+  // Function to sort the table
   function sortTable(isAscending) {
     const table = document.getElementById("dataTable");
-    const rows = Array.from(table.rows).slice(1); // Ambil semua baris kecuali header
+    const rows = Array.from(table.rows).slice(1); // Get all rows except header
     const sortedRows = rows.sort((a, b) => {
-      const riskA = a.cells[5].textContent; // Kolom risiko
+      const riskA = a.cells[5].textContent; // Risk column
       const riskB = b.cells[5].textContent;
 
       const riskLevels = ["Rendah", "Sedang", "Tinggi"];

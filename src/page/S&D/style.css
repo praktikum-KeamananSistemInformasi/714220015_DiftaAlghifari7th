@@ -57,6 +57,9 @@ main {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+h1 {
+    margin-left: 1vw;
+}
 h2 {
     margin-top: 20px;
 }
@@ -91,24 +94,28 @@ button:hover {
 
 #logContainer {
     margin-top: 20px;
+    margin-left: 1vw;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    margin-left: 1vw;
 }
 
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
+    margin-left: 1vw;
 }
 
 th {
     background-color: #f2f2f2;
 }
 
-.threatDescription {
+.threatForm .threatDescription {
     width: fit-content;
+    margin-left: 1vw;
 }
